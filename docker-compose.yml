@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo_books_db
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=books_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

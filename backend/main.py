@@ -17,21 +17,18 @@ class BookInDB(Book):
 
 app = FastAPI()
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-DB_NAME = os.getenv("DB_NAME", "books_db")
-
-client = AsyncIOMotorClient(MONGO_URI)
-db = client[DB_NAME]
-
-origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+client = AsyncIOMotorClient(MONGO_URI)
+db = client["grocerydb"]
+books = db["items"]
 
 def book_helper(doc) -> BookInDB:
     """Convert MongoDB document to BookInDB schema"""
@@ -59,7 +56,7 @@ async def add_book(book: Book):
     return book_helper(new_doc)
 
 @app.delete("/books/delete/{book_id}")
-async def delete_book(book_id: str, response_model=BookInDB):
+async def delete_book(book_id: str):
     try:
         obj_id = ObjectId(book_id)
     except Exception:
@@ -68,7 +65,7 @@ async def delete_book(book_id: str, response_model=BookInDB):
     result = await db.items.delete_one({"_id": obj_id})
 
     if result.deleted_count == 1:
-        return result.raw_result
+        return result
     else:
         raise HTTPException(status_code=404, detail="Book not found")
 

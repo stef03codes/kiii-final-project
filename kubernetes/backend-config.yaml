@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: books-app
+data:
+  APP_ENV: "production"
+  APP_LOG_LEVEL: "info"
+  MONGO_HOST: "mongo.books-app.svc.cluster.local"
+  MONGO_DB: "books-appdb"

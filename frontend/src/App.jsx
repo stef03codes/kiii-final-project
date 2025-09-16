@@ -11,7 +11,7 @@ function App() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/books")
+    fetch("http://books-app.local/books")
       .then((res) => res.json())
       .then((data) => setBooks(data))
       .catch(console.error);
@@ -28,7 +28,7 @@ function App() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/books/add", {
+      const response = await fetch("http://books-app.local/books/add", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(formData)
@@ -42,7 +42,7 @@ function App() {
 
   const handleDelete = async (e) => {
     try {
-      await fetch("http://localhost:8000/books/delete/" + e.target.id, { method: "DELETE" });
+      await fetch("http://books-app.local/books/delete/" + e.target.id, { method: "DELETE" });
       setBooks((prev) => prev.filter(book => book.id !== e.target.id));
     } catch (error) {
       console.log(error)

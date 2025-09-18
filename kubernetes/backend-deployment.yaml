@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: steftsk/books-backend:1.0.1
+        image: steftsk/books-backend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000

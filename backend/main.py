@@ -26,8 +26,9 @@ app.add_middleware(
 )
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB_NAME = os.getenv("MONGO_DB", "books-appdb")
 client = AsyncIOMotorClient(MONGO_URI)
-db = client["grocerydb"]
+db = client[DB_NAME]
 books = db["items"]
 
 def book_helper(doc) -> BookInDB:
